@@ -1,34 +1,6 @@
-
-function hslString(h, s, l) {
-  return `hsl(${h}, ${s}, ${l})`
-}
-
 function oppositeHue(h) {
   return (h + 180) % 360
 }
-
-function getShade(h, s, l, percentage) {
-  const baseLightness = parseInt(l, 10)
-  const differenceToWhite = 100 - parseInt(l, 10)
-  const tint = (parseInt(percentage, 10) / 100) * differenceToWhite
-  const adjustedLightness = `${baseLightness + tint}%`
-  return hslString(h, s, adjustedLightness)
-}
-
-function generateShades(h, s, l, shadeVariation) {
-  const names = ['darker', 'dark', 'base', 'light', 'lighter']
-  let variationMultiplier = -2
-  const shades = {}
-
-  names.forEach(name => {
-    const variationPercentage = parseInt(shadeVariation, 10) * variationMultiplier
-    shades[name] = getShade(h, s, l, variationPercentage)
-    variationMultiplier++
-  })
-
-  return shades
-}
-
 
 // scheme generators
 // -------------------------------------------
@@ -36,27 +8,11 @@ function generateShades(h, s, l, shadeVariation) {
 function generateAnalogousScheme(h, s, l, hueIncrement) {
   return [
     [h, s, l],
+    [h - hueIncrement/2, s, l],
     [h - hueIncrement, s, l],
+    [h + hueIncrement/3, s, l],
+    [h + hueIncrement/2, s, l],
     [h + hueIncrement, s, l],
-  ]
-}
-
-function generateAccentedAnalogousScheme(h, s, l, hueIncrement) {
-  return [
-    [h, s, l],
-    [h - hueIncrement, s, l],
-    [h + hueIncrement, s, l],
-    [oppositeHue(h), s, l],
-  ]
-}
-
-function generateDualScheme(h, s, l, hueIncrement) {
-  const betaHue = h + hueIncrement
-  return [
-    [h, s, l],
-    [oppositeHue(h), s, l],
-    [betaHue, s, l],
-    [oppositeHue(betaHue), s, l],
   ]
 }
 
@@ -65,7 +21,9 @@ function generateComplementaryScheme(h, s, l, hueIncrement) {
   return [
     [h, s, l],
     [oppositeHue(h), s, l],
+    [oppositeHue(h) - hueIncrement/2, s, l],
     [oppositeHue(h) - hueIncrement, s, l],
+    [oppositeHue(h) + hueIncrement/2, s, l],
     [oppositeHue(h) + hueIncrement, s, l],
   ]
 }
@@ -74,7 +32,10 @@ function generateTriadicScheme(h, s, l, hueIncrement) {
   console.log("triadic")
   return [
     [h, s, l],
+    [oppositeHue(h+hueIncrement), s, l],
+    [oppositeHue(h) - hueIncrement/2, s, l],
     [oppositeHue(h) - hueIncrement, s, l],
+    [oppositeHue(h) + hueIncrement/2, s, l],
     [oppositeHue(h) + hueIncrement, s, l],
   ]
 }
@@ -83,10 +44,8 @@ function generateTriadicScheme(h, s, l, hueIncrement) {
 // palette generator
 // -------------------------------------------
 
-export default function generatePalette(h, s, l, { hueIncrement = 20,
-  shadeVariation = '20%',
+/* export default */ function generatePalette(h, s, l, { hueIncrement = 40,
   scheme = 'complementary' } = {}) {
-  const colorGroupNames = ['alpha', 'beta', 'delta', 'gamma', 'epsilon']
 
   let colorValues = []
   switch (scheme) {
@@ -103,19 +62,20 @@ export default function generatePalette(h, s, l, { hueIncrement = 20,
       colorValues = generateDualScheme(h, s, l, hueIncrement)
       break
     case 'triadic':
-      colorValues = generateTriadicScheme(h, s, l, hueIncrement)
+        colorValues = generateTriadicScheme(h, s, l, hueIncrement)
       break
     default:
       colorValues = generateComplementaryScheme(h, s, l, hueIncrement)
   }
 
-  const colors = {}
+  const colors = []
   colorValues.forEach((color, i) => {
     const [h, s, l] = color
-    colors[colorGroupNames[i]] = generateShades(h, s, l, shadeVariation)
+    colors.push(`hsl(${h},${s},${l})`);
   })
-
-  colors.grey = generateShades(h, '25%', '87%', shadeVariation)
 
   return colors
 }
+
+const colors = generatePalette(100, "74%", "58%", { scheme: 'dual', hueIncrement: 30 });
+console.log(colors);
