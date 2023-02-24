@@ -44,7 +44,7 @@ function generateTriadicScheme(h, s, l, hueIncrement) {
 // palette generator
 // -------------------------------------------
 
-/* export default */ function generatePalette(h, s, l, { hueIncrement = 40,
+export default function generatePalette(h, s, l, { hueIncrement = 40,
   scheme = 'complementary' } = {}) {
 
   let colorValues = []
@@ -54,12 +54,6 @@ function generateTriadicScheme(h, s, l, hueIncrement) {
       break
     case 'analogous':
       colorValues = generateAnalogousScheme(h, s, l, hueIncrement)
-      break
-    case 'accentedAnalogous':
-      colorValues = generateAccentedAnalogousScheme(h, s, l, hueIncrement)
-      break
-    case 'dual':
-      colorValues = generateDualScheme(h, s, l, hueIncrement)
       break
     case 'triadic':
         colorValues = generateTriadicScheme(h, s, l, hueIncrement)
