@@ -1,0 +1,29 @@
+{
+  "name": "arduinocolorpalette",
+  "version": "1.0.0",
+  "description": "",
+  "browserslist": "> 0.25%, not dead",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "parcel src/index.html -p 8080",
+    "build": "parcel build src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/julessandoz/arduinoColorPalette.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/julessandoz/arduinoColorPalette/issues"
+  },
+  "homepage": "https://github.com/julessandoz/arduinoColorPalette#readme",
+  "devDependencies": {
+    "parcel": "^2.8.3"
+  },
+  "dependencies": {
+    "color-convert": "^2.0.1",
+    "notyf": "^3.10.0"
+  }
+}
