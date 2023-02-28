@@ -98,7 +98,7 @@ header {
 }
 
 header.minimized {
-  height: 20vh;
+  height: 30vh;
   transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 1s;
 }
 
@@ -132,7 +132,7 @@ main {
 }
 
 header.minimized + main {
-  height: 80vh;
+  height: 70vh;
 }
 
 main > * {
@@ -163,4 +163,30 @@ main > *:hover p {
   top: 50%;
   transition: all cubic-bezier(0.075, 0.82, 0.165, 1) 0.1s;
   width: 100%;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+.wrapper__mode {
+  margin: 2rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+.wrapper__mode input {
+  width: min-content;
+}
+
+.wrapper__mode label {
+  padding: 0 1rem;
+}
+
+form {
+  display: flex;
+  justify-content: center;
 }
