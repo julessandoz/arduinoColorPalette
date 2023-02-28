@@ -1,15 +1,14 @@
 import * as convert from "color-convert";
 
 export class Color {
-  // Crée un champ privé #hsl
   #hsl;
-  // Crée un champ privé #hex
   #hex;
-  // Crée un champ privé #element
+  #hslCompact;
   #element;
 
   constructor(hsl) {
     this.#hsl = hsl;
+    this.#hslCompact =`hsl(${hsl[0]},${hsl[1]}%,${hsl[2]}%`;
 
     // Converti la valeur hsl en hexadécimal
     this.#hex = `#${convert.hsl.hex(hsl)}`;
@@ -26,7 +25,7 @@ export class Color {
     // Ajoute l'attribut de donnée "data-color"
     colorElement.dataset.color = this.#hex;
     // Change la couleur de fond de l'élément
-    colorElement.style.backgroundColor = this.#hex;
+    colorElement.style.backgroundColor = this.#hslCompact;
 
     //Crée un élément <p>
     const textElement = document.createElement("p");

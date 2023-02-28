@@ -85,7 +85,7 @@ html {
 
 body {
   animation: gradient 15s ease infinite;
-  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+  /* background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab); */
   background-size: 400% 400%;
   overflow-x: hidden;
 }
@@ -113,6 +113,7 @@ header input {
   padding: 3rem;
   text-transform: uppercase;
   width: 8ch;
+  background: rgba(229, 229, 229,0.5);
 }
 
 header input:focus {

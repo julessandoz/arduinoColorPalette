@@ -17,7 +17,6 @@ function generateAnalogousScheme(h, s, l, hueIncrement) {
 }
 
 function generateComplementaryScheme(h, s, l, hueIncrement) {
-  console.log("complementary")
   return [
     [h, s, l],
     [oppositeHue(h), s, l],
@@ -29,7 +28,6 @@ function generateComplementaryScheme(h, s, l, hueIncrement) {
 }
 
 function generateTriadicScheme(h, s, l, hueIncrement) {
-  console.log("triadic")
   return [
     [h, s, l],
     [oppositeHue(h+hueIncrement), s, l],
@@ -71,5 +69,3 @@ export default function generatePalette(h, s, l, { hueIncrement = 40,
   return colors
 }
 
-const colors = generatePalette(100, "74%", "58%", { scheme: 'dual', hueIncrement: 30 });
-console.log(colors);

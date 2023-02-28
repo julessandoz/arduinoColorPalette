@@ -1,17 +1,22 @@
-import * as convert from "color-convert";
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
 
 import { Color } from "./modules/Color";
 import {
-  displayMessage,
   isHexColor,
   hexToCSSHSL,
-  generatePalette
+  // generatePalette
 } from "./modules/utils";
+import generatePalette from './modules/palette';
 
 // Instancier Notyf
 const notyf = new Notyf();
+document.querySelectorAll('.wrapper__mode label').forEach(i => {
+  i.addEventListener('input', () => {
+    const value = document.querySelector("form input").value;
+    updatePalette(value);
+  })
+})
 
 // Cherche l'élément <form> dans le DOM
 const formElement = document.querySelector("form");
@@ -25,16 +30,8 @@ const handleForm = (e) => {
     e.preventDefault();
     // Cherche la valeur de l'élément <input>
     const inputValue = e.target.firstElementChild.value;
+    updatePalette(inputValue);
     // Vérifie que la valeur soit bien un code hexadécimal
-    if (!isHexColor(inputValue)) {
-      // Si ce n'est pas le cas, balancer l'erreur
-      throw new Error(`${inputValue} is not a valid Hexadecimal color`);
-    }
-
-    // Crée la palette à partir du code hexadécimal
-    const palette = generatePalette(inputValue);
-
-    displayColors(inputValue, palette);
   } catch (err) {
     // Attrape les erreurs du block try et les affiche dans une notification.
     notyf.error(err.message);
@@ -53,7 +50,7 @@ const handleClick = async (e) => {
   notyf.success(`copied ${color} to clipboard`);
 };
 
-const displayColors = (input, palette) => {
+const displayColors = (palette) => {
   // Efface tout le contenu de l'élément <main>
   colorContainer.innerHTML = "";
 
@@ -62,36 +59,50 @@ const displayColors = (input, palette) => {
   // Ajoute la classe "minimized" au header
   header.classList.add("minimized");
 
-  // Reçoit l'input du formulaire, et modifie la variable css "--shadow-color"
-  // avec ce qui sort de la fonction hexToCSSHSL.
-  document.documentElement.style.setProperty(
-    "--shadow-color",
-    hexToCSSHSL(input)
-  );
-
-  // Crée un tableau avec les index de la palette que nous souhaitons
-  // transformer en hex pour le dégradé. On le map ensuite de telle sorte
-  // à recevoir en retour les valeur hex pour chaque couleur de la palette
-  // à l'index du tableau de départ. On ajoute également un "#" au début
-  // des chaînes de caractère.
-  const gradientColors = [
-    0,
-    Math.round(palette.length / 2),
-    palette.length - 1
-  ].map((index) => `#${convert.hsl.hex(palette[index])}`);
-
-  // Utilise les valeurs du tableau gradientColors pour modifier le dégradé.
-  document.body.style.background = `linear-gradient(-45deg, ${gradientColors.join(
-    ","
-  )}`;
-
   // Redéfinis background-size.
   document.body.style.backgroundSize = `400% 400%`;
 
-  // Prend chaque élément dans le tableau palette, instancie une classe avec
-  // ses données et appelle la méthode display() dessus.
   palette.map((c) => new Color(c).display(colorContainer));
 };
 
+function updatePalette(inputValue) {
+
+  if (!isHexColor(inputValue)) {
+    // Si ce n'est pas le cas, balancer l'erreur
+    throw new Error(`${inputValue} is not a valid Hexadecimal color`);
+  }
+
+  const paletteMode = document.querySelector("input[type='radio']:checked").value;
+
+  const option = { scheme: paletteMode };
+  const hsl = hexToCSSHSL(inputValue);
+  const part = hsl.split(' ');
+  const h = part[0].match(/\d./)[0];
+  const s = part[1];
+  const l = part[2];
+
+  let palette = generatePalette(h, s, l, option);
+  palette = palette.map(p => {
+    const part = p.split(',');
+    const h = part[0].match(/\d+/)[0];
+    const s = part[1].match(/\d+/)[0];
+    const l = part[2].match(/\d+/)[0];
+    return [h, `${s}`, `${l}`];
+  })
+
+  logPalette(palette, paletteMode);
+  displayColors(palette);
+}
+
 formElement.addEventListener("submit", handleForm);
 colorContainer.addEventListener("click", handleClick);
+
+function logPalette(palette, mode) {
+  let output = palette.map(c => {
+    return [`background:hsl(${c[0]},${c[1]},${c[2]});`]
+  })
+  const out = []
+  output = output.forEach(o => { out.push(o[0]) })
+  const c = "    ";
+  console.log(`${mode} %c ${c} %c ${c} %c ${c} %c ${c} %c ${c} %c ${c}`, ...out);
+}
