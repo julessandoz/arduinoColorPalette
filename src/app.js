@@ -1,6 +1,7 @@
 import { Notyf } from "notyf";
+import { io } from "socket.io-client";
 import "notyf/notyf.min.css";
-
+import * as convert from "color-convert";
 import { Color } from "./modules/Color";
 import {
   isHexColor,
@@ -17,6 +18,34 @@ document.querySelectorAll('.wrapper__mode label').forEach(i => {
     updatePalette(value);
   })
 })
+
+const socket = io();
+
+socket.on("connect", () => {
+  console.log("ws connected")
+});
+
+socket.on("data", (hexColor) => {
+  document.querySelector("form input").value = hexColor;
+  updatePalette(hexColor);
+});
+
+socket.on("disconnect", (reason) => {
+  console.log("ws disconnect: " + reason)
+});
+
+function sendData(hexPalette) {
+  if (socket.connected) {
+    let str = '';
+    hexPalette.forEach((color, i) => {
+      let separator = i != hexPalette.length - 1 ? '|' : '';
+      const rgb = convert.hsl.rgb(color);
+      str += `${rgb[0]},${rgb[1]},${rgb[2]}${separator}`
+    })
+    socket.emit(str);
+  }
+}
+
 
 // Cherche l'élément <form> dans le DOM
 const formElement = document.querySelector("form");
@@ -92,6 +121,7 @@ function updatePalette(inputValue) {
 
   logPalette(palette, paletteMode);
   displayColors(palette);
+  sendData(palette);
 }
 
 formElement.addEventListener("submit", handleForm);
