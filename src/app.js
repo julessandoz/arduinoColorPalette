@@ -1,5 +1,4 @@
 import { Notyf } from "notyf";
-import { io } from "socket.io-client";
 import "notyf/notyf.min.css";
 import * as convert from "color-convert";
 import { Color } from "./modules/Color";
@@ -19,30 +18,40 @@ document.querySelectorAll('.wrapper__mode label').forEach(i => {
   })
 })
 
-const socket = io();
 
-socket.on("connect", () => {
-  console.log("ws connected")
+const webSocket = new WebSocket(`ws://${window.location.host}`);
+let CONNEXION = false;
+
+webSocket.addEventListener('open', event => {
+  console.log('WebSocket connection opened');
+  CONNEXION = true;
 });
 
-socket.on("data", (hexColor) => {
-  document.querySelector("form input").value = hexColor;
-  updatePalette(hexColor);
+webSocket.addEventListener('message', hexColor => {
+  document.querySelector("form input").value = hexColor.data;
+  updatePalette(hexColor.data);
 });
 
-socket.on("disconnect", (reason) => {
-  console.log("ws disconnect: " + reason)
+webSocket.addEventListener('close', event => {
+  console.log('WebSocket connection closed');
 });
+
+webSocket.addEventListener('error', event => {
+  console.error('WebSocket error:', event);
+  CONNEXION = false;
+});
+
+
 
 function sendData(hexPalette) {
-  if (socket.connected) {
+  if (CONNEXION) {
     let str = '';
     hexPalette.forEach((color, i) => {
       let separator = i != hexPalette.length - 1 ? '|' : '';
       const rgb = convert.hsl.rgb(color);
       str += `${rgb[0]},${rgb[1]},${rgb[2]}${separator}`
     })
-    socket.emit(str);
+    webSocket.send(str);
   }
 }
 

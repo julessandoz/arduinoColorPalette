@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "parcel src/index.html -p 8080",
-    "build": "parcel build src/index.html"
+    "build": "parcel build src/index.html",
+    "upload": "./build.sh"
   },
   "repository": {
     "type": "git",
@@ -24,7 +25,6 @@
   },
   "dependencies": {
     "color-convert": "^2.0.1",
-    "notyf": "^3.10.0",
-    "socket.io-client": "^4.6.1"
+    "notyf": "^3.10.0"
   }
 }
