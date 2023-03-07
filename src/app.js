@@ -8,6 +8,7 @@ import {
   // generatePalette
 } from "./modules/utils";
 import generatePalette from './modules/palette';
+import WebSocketClient from "websocket/lib/WebSocketClient";
 
 // Instancier Notyf
 const notyf = new Notyf();
@@ -16,6 +17,11 @@ document.querySelectorAll('.wrapper__mode label').forEach(i => {
     const value = document.querySelector("form input").value;
     updatePalette(value);
   })
+})
+
+const socket = new WebSocketClient();
+socket.on('open', () => {
+  socket.send('hello');
 })
 
 // Cherche l'élément <form> dans le DOM
@@ -72,12 +78,13 @@ function updatePalette(inputValue) {
     throw new Error(`${inputValue} is not a valid Hexadecimal color`);
   }
 
+
   const paletteMode = document.querySelector("input[type='radio']:checked").value;
 
   const option = { scheme: paletteMode };
   const hsl = hexToCSSHSL(inputValue);
   const part = hsl.split(' ');
-  const h = part[0].match(/\d./)[0];
+  const h = part[0].match(/\d*/)[0];
   const s = part[1];
   const l = part[2];
 
@@ -99,10 +106,10 @@ colorContainer.addEventListener("click", handleClick);
 
 function logPalette(palette, mode) {
   let output = palette.map(c => {
-    return [`background:hsl(${c[0]},${c[1]},${c[2]});`]
+    return [`background:hsl(${c[0]}deg,${c[1]}%,${c[2]}%);`]
   })
   const out = []
-  output = output.forEach(o => { out.push(o[0]) })
+  output.forEach(o => { out.push(o[0]) })
   const c = "    ";
   console.log(`${mode} %c ${c} %c ${c} %c ${c} %c ${c} %c ${c} %c ${c}`, ...out);
 }
