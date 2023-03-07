@@ -1,4 +1,5 @@
 #!/bin/bash
+dir="~/Documents/Arduino/server/data"
 npm run build
-rm -rf ~/Documents/Arduino/server/data/*
-mv ./dist/* ~/Documents/Arduino/server/data
+rm -rf $dir*
+mv ./dist/* $dir

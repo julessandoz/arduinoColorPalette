@@ -8,7 +8,6 @@ import {
   // generatePalette
 } from "./modules/utils";
 import generatePalette from './modules/palette';
-import WebSocketClient from "websocket/lib/WebSocketClient";
 
 // Instancier Notyf
 const notyf = new Notyf();
