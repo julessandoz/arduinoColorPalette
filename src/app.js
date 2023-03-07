@@ -1,6 +1,6 @@
 import { Notyf } from "notyf";
 import "notyf/notyf.min.css";
-
+import * as convert from "color-convert";
 import { Color } from "./modules/Color";
 import {
   isHexColor,
@@ -19,10 +19,43 @@ document.querySelectorAll('.wrapper__mode label').forEach(i => {
   })
 })
 
-const socket = new WebSocketClient();
-socket.on('open', () => {
-  socket.send('hello');
-})
+
+const webSocket = new WebSocket(`ws://${window.location.host}`);
+let CONNEXION = false;
+
+webSocket.addEventListener('open', event => {
+  console.log('WebSocket connection opened');
+  CONNEXION = true;
+});
+
+webSocket.addEventListener('message', hexColor => {
+  document.querySelector("form input").value = hexColor.data;
+  updatePalette(hexColor.data);
+});
+
+webSocket.addEventListener('close', event => {
+  console.log('WebSocket connection closed');
+});
+
+webSocket.addEventListener('error', event => {
+  console.error('WebSocket error:', event);
+  CONNEXION = false;
+});
+
+
+
+function sendData(hexPalette) {
+  if (CONNEXION) {
+    let str = '';
+    hexPalette.forEach((color, i) => {
+      let separator = i != hexPalette.length - 1 ? '|' : '';
+      const rgb = convert.hsl.rgb(color);
+      str += `${rgb[0]},${rgb[1]},${rgb[2]}${separator}`
+    })
+    webSocket.send(str);
+  }
+}
+
 
 // Cherche l'élément <form> dans le DOM
 const formElement = document.querySelector("form");
@@ -99,6 +132,7 @@ function updatePalette(inputValue) {
 
   logPalette(palette, paletteMode);
   displayColors(palette);
+  sendData(palette);
 }
 
 formElement.addEventListener("submit", handleForm);

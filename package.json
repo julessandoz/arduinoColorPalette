@@ -5,8 +5,9 @@
   "browserslist": "> 0.25%, not dead",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "parcel src/index.html -p 8081",
-    "build": "parcel build src/index.html"
+    "start": "parcel src/index.html -p 8080",
+    "build": "parcel build src/index.html",
+    "upload": "./build.sh"
   },
   "repository": {
     "type": "git",
