@@ -5,14 +5,40 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Challenge 17 - Color Generator</title>
+  <title>Color Generator</title>
   <link rel="stylesheet" href="style.css" />
   <script src="app.js" type="module" defer></script>
 </head>
 
 <body>
+  <div class="wrapper">
+    <div class="calibrate__samples ">
+      <div class="is-display-none r-div">
+        <p class="scanme">Scan moi !</p>
+        <input id='r' type='checkbox' disabled/>
+        <label for='r'>
+          <span></span>
+        </label>
+      </div>
+      <div class="is-display-none g-div">
+        <p class="scanme">Scan moi !</p>
+        <input id='g' type='checkbox' disabled/>
+        <label for='g'>
+          <span></span>
+        </label>
+      </div>
+      <div class="is-display-none b-div">
+        <p class="scanme">Scan moi !</p>
+        <input id='b' type='checkbox' disabled/>
+        <label for='b'>
+          <span></span>
+        </label>
+      </div>
+    </div>
+  </div>
   <header>
     <div class="wrapper">
+      <button type="menu" class="calibrate">Calibrer</button>
       <form>
         <input type="text" placeholder="#f15025" autofocus />
       </form>

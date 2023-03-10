@@ -5,11 +5,19 @@ import { Color } from "./modules/Color";
 import {
   isHexColor,
   hexToCSSHSL,
-  // generatePalette
 } from "./modules/utils";
 import generatePalette from './modules/palette';
 
-// Instancier Notyf
+let calibration = 0;
+const formElement = document.querySelector("form");
+const colorContainer = document.querySelector("main");
+const input = document.querySelector("input[type='text']");
+const calibrateSamples = document.querySelectorAll('.calibrate__samples>div');
+const calibrateBtn = document.querySelector('.calibrate');
+let CONNEXION = false;
+const webSocket = new WebSocket(`ws://${window.location.host}`);
+const calibrateInputs = document.querySelectorAll('#r,#g,#b');
+
 const notyf = new Notyf();
 document.querySelectorAll('.wrapper__mode label').forEach(i => {
   i.addEventListener('input', () => {
@@ -18,13 +26,21 @@ document.querySelectorAll('.wrapper__mode label').forEach(i => {
   })
 })
 
+formElement.addEventListener("submit", handleForm);
 
-const webSocket = new WebSocket(`ws://${window.location.host}`);
-let CONNEXION = false;
+colorContainer.addEventListener("click", handleClick);
 
-webSocket.addEventListener('open', event => {
-  console.log('WebSocket connection opened');
+calibrateBtn.addEventListener('click', (e) => {
+  e.preventDefault();
+  calibrateSamples[0].classList.remove('is-display-none');
+  calibration = 1;
+})
+
+webSocket.addEventListener('open', () => {
+  const msg = 'WebSocket connexion ouverte'
+  console.log(msg);
   CONNEXION = true;
+  notyf.success(msg);
 });
 
 webSocket.addEventListener('message', hexColor => {
@@ -32,16 +48,19 @@ webSocket.addEventListener('message', hexColor => {
   updatePalette(hexColor.data);
 });
 
-webSocket.addEventListener('close', event => {
-  console.log('WebSocket connection closed');
+webSocket.addEventListener('close', () => {
+  const msg = 'WebSocket connexion fermée'
+  console.log(msg);
+  CONNEXION = false;
+  notyf.error(msg);
 });
 
 webSocket.addEventListener('error', event => {
-  console.error('WebSocket error:', event);
+  const msg = 'WebSocket erreur'
+  console.log(msg, event);
+  notyf.error(msg);
   CONNEXION = false;
 });
-
-
 
 function sendData(hexPalette) {
   if (CONNEXION) {
@@ -55,66 +74,103 @@ function sendData(hexPalette) {
   }
 }
 
-
-// Cherche l'élément <form> dans le DOM
-const formElement = document.querySelector("form");
-
-// Cherche l'élément <main> des couleurs dans le DOM
-const colorContainer = document.querySelector("main");
-
-const handleForm = (e) => {
+function handleForm(e) {
   try {
-    // Empêche le refresh lors de la soumission du formulaire
     e.preventDefault();
-    // Cherche la valeur de l'élément <input>
     const inputValue = e.target.firstElementChild.value;
     updatePalette(inputValue);
-    // Vérifie que la valeur soit bien un code hexadécimal
   } catch (err) {
-    // Attrape les erreurs du block try et les affiche dans une notification.
     notyf.error(err.message);
   }
-};
+}
 
-const handleClick = async (e) => {
-  // Cherche l'élément avec la classe "color" le plus proche de la cible du
-  // click et récupère son data-color.
+async function handleClick(e) {
   const color = e.target.closest(".color").dataset.color;
-
-  // Copie de façon asynchrone la couleur dans le presse-papier
   await navigator.clipboard.writeText(color);
+  notyf.success(`${color} copié dans le press-papier`);
+}
 
-  // Affiche un message de succès dans une notification
-  notyf.success(`copied ${color} to clipboard`);
-};
-
-const displayColors = (palette) => {
-  // Efface tout le contenu de l'élément <main>
+function displayColors(palette) {
   colorContainer.innerHTML = "";
-
-  // Cherche l'élément header dans le DOM
   const header = document.querySelector("header");
-  // Ajoute la classe "minimized" au header
   header.classList.add("minimized");
-
-  // Redéfinis background-size.
   document.body.style.backgroundSize = `400% 400%`;
-
   palette.map((c) => new Color(c).display(colorContainer));
-};
+}
+
+function diff(value) {
+  const diff = 255 - value;
+  const percentage = (diff * 100) / 255
+  return percentage;
+}
+
+function checkForCalibration(rgb) {
+  console.log(rgb)
+  if (calibration == 1) {
+    const r = rgb[0]
+    const percentageDiff = diff(r);
+    localStorage.setItem('r', percentageDiff);
+    calibration++;
+    calibrateInputs[0].checked = true;
+    setTimeout(() => {
+      calibrateSamples[0].classList.add('is-display-none');
+      calibrateSamples[1].classList.remove('is-display-none');
+      calibrateInputs[0].checked = false;
+    }, 1000);
+  }
+  else if (calibration == 2) {
+    const g = rgb[1]
+    const diff = 255 - g;
+    localStorage.setItem('g', diff);
+    calibration++;
+    calibrateInputs[1].checked = true;
+    setTimeout(() => {
+      calibrateSamples[1].classList.add('is-display-none');
+      calibrateSamples[2].classList.remove('is-display-none');
+      calibrateInputs[1].checked = false;
+    }, 1000);
+  }
+  else if (calibration == 3) {
+    const b = rgb[2]
+    const diff = 255 - b;
+    localStorage.setItem('b', diff);
+    calibration++;
+    calibrateInputs[2].checked = true;
+    setTimeout(() => {
+      calibrateInputs[2].checked = false;
+      calibrateSamples[2].classList.add('is-display-none');
+    }, 1000);
+  }
+  return calibration
+}
 
 function updatePalette(inputValue) {
 
+  const rgb = convert.hex.rgb(inputValue);
   if (!isHexColor(inputValue)) {
-    // Si ce n'est pas le cas, balancer l'erreur
-    throw new Error(`${inputValue} is not a valid Hexadecimal color`);
+    return notyf.error(`${inputValue} n'est pas une valeur Hexadecimal`);
   }
 
+  const status = checkForCalibration(rgb);
+  if (status == 4) {
+    calibration = 0;
+    return;
+  }
+  if (status != 0) {
+    return;
+  }
 
   const paletteMode = document.querySelector("input[type='radio']:checked").value;
 
   const option = { scheme: paletteMode };
-  const hsl = hexToCSSHSL(inputValue);
+  const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
+  const r = clamp((Math.ceil(255 / 100 * localStorage.getItem('r') || 0)) + rgb[0], 0, 255)
+  const g = clamp((Math.ceil(255 / 100 * localStorage.getItem('g') || 0)) + rgb[1], 0, 255)
+  const b = clamp((Math.ceil(255 / 100 * localStorage.getItem('b') || 0)) + rgb[2], 0, 255)
+
+  const newHex = convert.rgb.hex([r, g, b]);
+
+  const hsl = hexToCSSHSL(newHex);
   const part = hsl.split(' ');
   const h = part[0].match(/\d*/)[0];
   const s = part[1];
@@ -129,13 +185,11 @@ function updatePalette(inputValue) {
     return [h, `${s}`, `${l}`];
   })
 
+  input.style.background = `hsl(${hsl})`;
   logPalette(palette, paletteMode);
   displayColors(palette);
   sendData(palette);
 }
-
-formElement.addEventListener("submit", handleForm);
-colorContainer.addEventListener("click", handleClick);
 
 function logPalette(palette, mode) {
   let output = palette.map(c => {

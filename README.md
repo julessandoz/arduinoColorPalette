@@ -4,7 +4,10 @@ ArduinoColorPalette est un projet étudiant réalisé à deux dans le cadre du c
 
 Il s'agit d'un capteur de couleur permettant de générer une palette de couleur à partir de la couleur détectée par le capteur. Le dispositif embarque un serveur web qui permet de servir une interface utilisateur pour afficher les couleurs générer par la palette ainsi que de changer de mode de couleur parmi analogue, triadique et complémentaire. La palette de couleur générée est alors renvoyée au serveur afin d'afficher la palette au moyen de LED RGB présente sur le dispositif.
 
-[Le dispositif final](capture.png)
+<img src="img/img1.jpg"  alt="Le dispositif final 1" height="500" >
+<img src="img/img2.jpg"  alt="Le dispositif final 2" height="500" >
+
+![Le dispositif final 2](img/capture.png)
 
 # Summary
 
@@ -18,6 +21,7 @@ Il s'agit d'un capteur de couleur permettant de générer une palette de couleur
   - [5. Connecter le serveur web au wifi](#5-connecter-le-serveur-web-au-wifi)
   - [6. Compilation et upload](#6-compilation-et-upload)
 - [Informations complémentaire sur le projet](#informations-complémentaire-sur-le-projet)
+- [Problématique rencontrée](#problématique-rencontrée)
 
 # Reproduire le projet
 
@@ -112,3 +116,5 @@ Vous pouvez à présent compiler et uploader votre code sur votre ESP32 au moyen
 # Informations complémentaire sur le projet
 
 En raison de la luminosité ambiante, le capteur de couleur n'est pas très fiable
+
+# Problématique rencontrée
