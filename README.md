@@ -2,7 +2,7 @@
 
 ArduinoColorPalette est un projet étudiant réalisé à deux dans le cadre du cours Arduino de la Haute École d'Ingénierie et de Gestion du Canton de Vaud (Suisse).   
 
-Il s'agit d'un capteur de couleur permettant de générer une palette de couleur à partir de la couleur détectée par le capteur. Le dispositif embarque un serveur web qui permet de servir une interface utilisateur pour afficher les couleurs générer par la palette ainsi que de changer de mode de couleur parmi analogue, triadique et complémentaire. La palette de couleur générée est alors renvoyée au serveur afin d'afficher la palette au moyen de LED RGB présente sur le dispositif.
+Il s'agit d'un capteur permettant de générer une palette 6 couleurs à partir de la couleur détectée capteur. Le dispositif embarque un serveur web qui permet de servir une interface utilisateur pour afficher les couleurs générer par la palette ainsi que de changer de mode de couleur parmi analogue, triadique et complémentaire. La palette de couleur générée est alors renvoyée au serveur afin d'afficher la palette au moyen de LED RGB présente sur le dispositif.
 
 [Le dispositif final](capture.png)
 
@@ -21,14 +21,14 @@ Il s'agit d'un capteur de couleur permettant de générer une palette de couleur
 
 # Reproduire le projet
 
-⚠️  Les exemples de code suivant partent du principe que l'installation se fait sur macOS au moyen du shell bash, sur un autre système les étapes et noms des dossiers peuvent un peu varier. De plus la plus part de étape require d'utiliser l'interface graphique de l'ide Arduino. Il est biensur possible de réaliser toutes les étapes uniquement à la ligne de commande si vous savez ce que vous faites.
+⚠️  Les exemples de code suivant partent du principe que l'installation se fait sur macOS au moyen du shell bash, sur un autre système les étapes et noms des dossiers peuvent un peu varier. De plus la plus part des étapes demandent d'utiliser l'interface graphique de l'IDE Arduino. Il est biensur possible de réaliser toutes les étapes uniquement à la ligne de commande si vous savez ce que vous faites.
 
-De plus il recommandé de disposer de deux version de l'ide Arduino. 
+De plus il recommandé de disposer de deux version de l'IDE Arduino. 
 
-- une ide version 1.8: servira à uploader les fichiers statique 
-- un ide avec la dernière version disponible: pour le reste.
+- une IDE version 1.8: servira à uploader les fichiers statiques.
+- une IDE avec la dernière version disponible: pour le reste.
 
-⚠️  A  chaque fois que vous souhaiter uploader des fichiers statiques sur votre board, il est nécéssaire de fermer le deuxième afin de ne pas occuper le port série nécéssaire à l'upload des fichires.
+⚠️  A  chaque fois que vous souhaiter uploader des fichiers statiques sur votre board, il est nécéssaire de fermer le deuxième afin de ne pas occuper le port série nécéssaire à l'upload des fichiers.
 
 ## 1. Réaliser le circuit Arduino au moyen du plan fournis
 
@@ -38,7 +38,7 @@ __Le plan du circuit__
 
 __Les composants requis__
 
-- La board ESP32 Feater
+- La board ESP32 Feather
 - Capteur de couleur: APDS9260
 
 ## 2. Construire l'interface
@@ -78,7 +78,7 @@ Une fois le projet ouvert dans l'IDE Arduino, installer les libraires suivantes.
 - SPIFFS
 - Arduino_APDS9960
 
-## 4. Upload les fichiers statiques sur l'arduino
+## 4. Upload les fichiers statiques sur l'Arduino
 
 L'upload des fichiers statiques à servir par le serveur web est réalisé au moyen de __Arduino IDE__
 
@@ -112,3 +112,15 @@ Vous pouvez à présent compiler et uploader votre code sur votre ESP32 au moyen
 # Informations complémentaire sur le projet
 
 En raison de la luminosité ambiante, le capteur de couleur n'est pas très fiable
+
+# Améliorations potentielles
+
+## 1, Optimisation du capteur
+Pour régler les problèmes de captation de la couleur dus à la lumière ambiante, le capteur pourrait être protégé de la lumière extérieure et éclairé par une LED attachée. Cela permettrait au capteur de toujours faire son travail dans des conditions optimales.
+
+## 2. Affichage de la palette sur l'appareil
+Nous aurions aimé ajouter un affichage de la palette de couleurs directement sur le capteur en plus de l'interface web. Ceci pourrait être réalisé à l'aide de LED RGB par exemple.
+
+# Quelques sources d'inspiration
+- [How to make Color Detector using TCS230 | TCS3200 Color Sensor, Arduino and LCD Display](https://www.youtube.com/watch?v=HsjrcjRNFwk)
+- [Arduino Based Real Life RGB Colour Picker - Make Your Own](https://www.youtube.com/watch?v=JeYrPW01xNA)
