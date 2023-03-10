@@ -8,8 +8,8 @@ Ce qui nous a motivés dans ce projet est la possibilité  d’intégrer un serv
 
 __Images du prototype final__
 
-<img src="img/img1.jpg"  alt="Le dispositif final 1" height="500" >
-<img src="img/img2.jpg"  alt="Le dispositif final 2" height="500" >
+<img src="img/img1.jpg"  alt="Le dispositif final 1" height="400" >
+<img src="img/img2.jpg"  alt="Le dispositif final 2" height="400" >
 
 # Résumé
 
