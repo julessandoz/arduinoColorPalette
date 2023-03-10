@@ -112,8 +112,8 @@ __Marche à suivre__
 Ouvrir le sketch Arduino avec l'IDE Arduino et compléter les lignes suivantes tout en haut du fichier avec vos informations de connexion.
 
 ```c
-const char* ssid = "Le nom de votre réseaux wifi ici";
-const char* password = "Votre mot de passe ici";
+static const char* ssid = "Le nom de votre réseaux wifi ici";
+static const char* password = "Votre mot de passe ici";
 ```
 
 Afin de pouvoir consulter le site web sur un navigateur, il est nécessaire d'être connecté au même réseau wifi que le serveur. L'adresse du site web est affichée dans le Serial moniteur de l'IDE Arduino sur `115200`.
