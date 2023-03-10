@@ -71,7 +71,7 @@ npm run upload
 
 ## 3. Installer les libraires arduino suivantes
 
-Une fois le projet ouvert dans l'ide Arduino, installer les libraires suivantes.
+Une fois le projet ouvert dans l'IDE Arduino, installer les libraires suivantes.
 
 - AsyncTCP
 - ESPAsyncWebSrv
@@ -80,13 +80,13 @@ Une fois le projet ouvert dans l'ide Arduino, installer les libraires suivantes.
 
 ## 4. Upload les fichiers statiques sur l'arduino
 
-L'upload des fichiers statiques à servir par le serveur web est réalisé au moyen de __Arduino ide__
+L'upload des fichiers statiques à servir par le serveur web est réalisé au moyen de __Arduino IDE__
 
-⚠️  si l'upload est réalisé au moyen de __Arduino ide__ il faut s'assurer que la version de l'ide n'est pas supérieure à __1.8__
+⚠️  si l'upload est réalisé au moyen de __Arduino IDE__ il faut s'assurer que la version de l'ide n'est pas supérieure à __1.8__
 
 __Marche à suivre__
 
-1. Ouvrir le projet dans l'ide
+1. Ouvrir le projet dans l'IDE
 2. S'assurer que le bon port série est sélectionné
 3. Ajouter le board pour ESP32
  - [SPIFFS Error: esptool not found!](https://rntlab.com/question/spiffs-error-esptool-not-found/)
@@ -94,18 +94,18 @@ __Marche à suivre__
 
 ## 5. Connecter le serveur web au wifi
 
-Ouvrir le sketch arduino avec l'ide arduino et compléter les lignes suivantes tout en haut du fichier avec vos informations de connexion.
+Ouvrir le sketch arduino avec l'IDE arduino et compléter les lignes suivantes tout en haut du fichier avec vos informations de connexion.
 
 ```c
 const char* ssid = "Le nom de votre réseaux wifi ici";
 const char* password = "Votre mot de passe ici";
 ```
 
-Afin de pouvoir consulter le site web sur un navigateur, il est nécéssire d'être conecté au même résaux wifi que le serveur. l'addresse du site web est affichée dans le Serial moniteur de l'ide Arduino sur `115200`.
+Afin de pouvoir consulter le site web sur un navigateur, il est nécéssire d'être conecté au même résaux wifi que le serveur. l'addresse du site web est affichée dans le Serial moniteur de l'IDE Arduino sur `115200`.
 
 ## 6. Compilation et upload
 
-Vous pouvez à présent compiler et uploader votre code sur votre ESP32 au moyen de l'ide Arduino.
+Vous pouvez à présent compiler et uploader votre code sur votre ESP32 au moyen de l'IDE Arduino.
 
 📚 A des fins de débogage vous pouvez consulter les logs du programme sur le `baude rate 115200`
 
