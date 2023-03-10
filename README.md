@@ -115,7 +115,7 @@ En raison de la luminosité ambiante, le capteur de couleur n'est pas très fiab
 
 # Améliorations potentielles
 
-## 1, Optimisation du capteur
+## 1. Optimisation du capteur
 Pour régler les problèmes de captation de la couleur dus à la lumière ambiante, le capteur pourrait être protégé de la lumière extérieure et éclairé par une LED attachée. Cela permettrait au capteur de toujours faire son travail dans des conditions optimales.
 
 ## 2. Affichage de la palette sur l'appareil
