@@ -1,6 +1,6 @@
 # ArduinoColorPalette
 
-ArduinoColorPalette est un projet étudiant réalisé à deux dans le cadre du cours Arduino de la Haute École d'ingénierie et de Gestion du Canton de Vaud (Suisse).   
+ArduinoColorPalette est un projet étudiant réalisé à deux dans le cadre du cours Arduino de la Haute École d'Ingénierie et de Gestion du Canton de Vaud (Suisse).   
 
 Il s'agit d'un capteur de couleur permettant de générer une palette de couleur à partir de la couleur détectée par le capteur. Le dispositif embarque un serveur web qui permet de servir une interface utilisateur pour afficher les couleurs générer par la palette ainsi que de changer de mode de couleur parmi analogue, triadique et complémentaire. La palette de couleur générée est alors renvoyée au serveur afin d'afficher la palette au moyen de LED RGB présente sur le dispositif.
 
